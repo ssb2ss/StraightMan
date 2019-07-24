@@ -1,11 +1,18 @@
 #include "StageSelectScene.h"
 #include "SceneManager.h"
+#include "FileManager.h"
 
+#include "MainScene.h"
 #include "GameScene.h"
 
 StageSelectScene::StageSelectScene()
 {
 
+}
+
+StageSelectScene::StageSelectScene(int stage, int star) 
+{
+	UpdateData(stage, star);
 }
 
 StageSelectScene::~StageSelectScene()
@@ -17,29 +24,42 @@ void StageSelectScene::Start() {
 	stageWidth = 22;
 	stageHeight = 9;
 
-	for (int i = 0; i < 24; i++) {
-		if (i < 13) {
-			playableStage[i] = true;
-		}
-		else {
-			playableStage[i] = true;
-		}
-		if (i < 3) {
-			stageStar[i] = 3;
-		}
-		else if (i < 7) {
-			stageStar[i] = 2;
-		}
-		else if (i < 10) {
-			stageStar[i] = 1;
-		}
-		else {
-			stageStar[i] = 0;
-		}
-	}
+	LoadData();
+	SaveData();
 
 	PrintSelectScene();
 	SelectStage();
+}
+
+void StageSelectScene::LoadData() {
+
+	playableStage = FileManager::GetInstance()->GetGameData();
+	for (int i = 0; i < 24; i++) {
+		stageStar[i] = FileManager::GetInstance()->GetGameData(i + 1);
+	}
+
+}
+
+void StageSelectScene::SaveData() {
+
+	FileManager::GameData data;
+	data.stage = playableStage;
+	for (int i = 0; i < 24; i++) {
+		data.starCount[i] = stageStar[i];
+	}
+	FileManager::GetInstance()->SaveGame(data);
+
+}
+
+void StageSelectScene::UpdateData(int stage, int star) {
+
+	LoadData();
+	playableStage = stage + 1;
+	if (stageStar[stage - 1] < star) {
+		stageStar[stage - 1] = star;
+	}
+	SaveData();
+
 }
 
 void StageSelectScene::PrintSelectScene() {
@@ -47,7 +67,7 @@ void StageSelectScene::PrintSelectScene() {
 	int cnt = 0;
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 6; j++) {
-			PrintStage((26 * j) + 4, (11 * i) + 1, cnt + 1, playableStage[cnt], stageStar[cnt]);
+			PrintStage((26 * j) + 4, (11 * i) + 1, cnt + 1, playableStage > cnt, stageStar[cnt]);
 			cnt++;
 		}
 	}
@@ -85,7 +105,7 @@ void StageSelectScene::PrintStage(int x, int y, int stage, bool isPlayable, int 
 	}
 
 	gotoxy(0, 44);
-	std::cout << "방향키 (WASD) : 이동 | 스페이스바 : 선택";
+	std::cout << "방향키 (WASD) : 이동 | 스페이스바 : 선택 | ESC : 메인화면";
 
 }
 
@@ -101,7 +121,12 @@ void StageSelectScene::SelectStage() {
 	while (true) {
 		if (_kbhit()) {
 			char key = _getch();
-			if (key == 32) { //스페이스바
+			if (key == 27) { //ESC
+				setBackgroundColor(ColorBlack);
+				SceneManager::ChangeScene(new MainScene());
+				break;
+			}
+			else if (key == 32) { //스페이스바
 				setBackgroundColor(ColorBlack);
 				SceneManager::ChangeScene(new GameScene(selectedStage));
 				break;
@@ -115,7 +140,7 @@ void StageSelectScene::SelectStage() {
 					PrintStageBorder(x, y, ColorLightRed);
 				}
 			}
-			else if ((key == 77 || key == 'D' || key == 'd') && (playableStage[selectedStage])) { //오른쪽
+			else if ((key == 77 || key == 'D' || key == 'd') && (selectedStage < playableStage)) { //오른쪽
 				if (selectedStage < 24) {
 					PrintStageBorder(x, y, ColorWhite);
 					selectedStage++;
@@ -133,7 +158,7 @@ void StageSelectScene::SelectStage() {
 					PrintStageBorder(x, y, ColorLightRed);
 				}
 			}
-			else if ((key == 80 || key == 'S' || key == 's') && (playableStage[selectedStage + 5])) { //아래쪽
+			else if ((key == 80 || key == 'S' || key == 's') && (selectedStage + 5 < playableStage)) { //아래쪽
 				if (selectedStage < 19) {
 					PrintStageBorder(x, y, ColorWhite);
 					selectedStage += 6;

@@ -7,14 +7,18 @@ class StageSelectScene :
 {
 public:
 	int stageWidth, stageHeight;
-	bool playableStage[24];
+	int playableStage;
 	int stageStar[24];
 
 	StageSelectScene();
+	StageSelectScene(int stage, int star);
 	~StageSelectScene();
 
 	void Start();
 
+	void LoadData();
+	void SaveData();
+	void UpdateData(int stage, int star);
 	void PrintSelectScene();
 	void PrintStage(int x, int y, int stage, bool isPlayable, int starCount);
 	void SelectStage();

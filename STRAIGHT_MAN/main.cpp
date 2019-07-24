@@ -5,4 +5,6 @@ int main() {
 
 	SceneManager* scene = new SceneManager();
 
+	delete scene;
+
 }

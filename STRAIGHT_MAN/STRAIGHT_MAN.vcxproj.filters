@@ -51,6 +51,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="FileManager.cpp">
+      <Filter>소스 파일\Framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConsoleFunctions.h">
@@ -73,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="FileManager.h">
+      <Filter>헤더 파일\Framework</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
