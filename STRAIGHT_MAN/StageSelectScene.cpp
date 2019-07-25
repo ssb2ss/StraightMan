@@ -54,7 +54,9 @@ void StageSelectScene::SaveData() {
 void StageSelectScene::UpdateData(int stage, int star) {
 
 	LoadData();
-	playableStage = stage + 1;
+	if (playableStage < stage + 1) {
+		playableStage = stage + 1;
+	}
 	if (stageStar[stage - 1] < star) {
 		stageStar[stage - 1] = star;
 	}
