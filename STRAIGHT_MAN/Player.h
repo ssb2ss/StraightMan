@@ -3,6 +3,7 @@ class Player
 {
 public:
 	int x, y;
+	int moveTime;
 
 	Player();
 	~Player();
