@@ -9,6 +9,7 @@ public:
 	int stageWidth, stageHeight;
 	int playableStage;
 	int stageStar[24];
+	int selectedStage;
 
 	StageSelectScene();
 	StageSelectScene(int stage, int star);

@@ -7,12 +7,13 @@
 
 StageSelectScene::StageSelectScene()
 {
-
+	selectedStage = 1;
 }
 
 StageSelectScene::StageSelectScene(int stage, int star) 
 {
 	UpdateData(stage, star);
+	selectedStage = stage;
 }
 
 StageSelectScene::~StageSelectScene()
@@ -109,14 +110,26 @@ void StageSelectScene::PrintStage(int x, int y, int stage, bool isPlayable, int 
 	gotoxy(0, 44);
 	std::cout << "방향키 (WASD) : 이동 | 스페이스바 : 선택 | ESC : 메인화면";
 
+	int totalStar = 0;
+	for (int i = 0; i < 24; i++) {
+		totalStar += stageStar[i];
+	}
+
+	if (totalStar / 10 == 0) {
+		gotoxy(137, 44);
+	}
+	else {
+		gotoxy(136, 44);
+	}
+	std::cout << "모은 별의 개수 : " << totalStar << " / 72";
+
 }
 
 void StageSelectScene::SelectStage() {
-	int selectedStage = 1;
 
 	int x, y;
-	x = 26 * (selectedStage - 1) + 4;
-	y = 11 * (selectedStage - 1) + 1;
+	x = 26 * ((selectedStage - 1) % 6) + 4;
+	y = 11 * ((selectedStage - 1) / 6) + 1;
 
 	PrintStageBorder(x, y, ColorLightRed);
 
