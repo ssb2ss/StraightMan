@@ -8,7 +8,7 @@ class StageSelectScene :
 public:
 	int stageWidth, stageHeight;
 	int playableStage;
-	int stageStar[24];
+	int stageStar[18];
 	int selectedStage;
 
 	StageSelectScene();

@@ -35,7 +35,7 @@ void StageSelectScene::Start() {
 void StageSelectScene::LoadData() {
 
 	playableStage = FileManager::GetInstance()->GetGameData();
-	for (int i = 0; i < 24; i++) {
+	for (int i = 0; i < 18; i++) {
 		stageStar[i] = FileManager::GetInstance()->GetGameData(i + 1);
 	}
 
@@ -45,7 +45,7 @@ void StageSelectScene::SaveData() {
 
 	FileManager::GameData data;
 	data.stage = playableStage;
-	for (int i = 0; i < 24; i++) {
+	for (int i = 0; i < 18; i++) {
 		data.starCount[i] = stageStar[i];
 	}
 	FileManager::GetInstance()->SaveGame(data);
@@ -68,12 +68,34 @@ void StageSelectScene::UpdateData(int stage, int star) {
 void StageSelectScene::PrintSelectScene() {
 
 	int cnt = 0;
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 6; j++) {
 			PrintStage((26 * j) + 4, (11 * i) + 1, cnt + 1, playableStage > cnt, stageStar[cnt]);
 			cnt++;
 		}
 	}
+
+	Color temp;
+	if (playableStage >= 19) {
+		temp = ColorWhite;
+	}
+	else {
+		temp = ColorGray;
+	}
+
+	for (int i = 0; i < stageHeight; i++) {
+		for (int j = 0; j < stageWidth * 6 + 20; j++) {
+			if (i == 0 || i == stageHeight - 1 || (j == 0 || j == 1) || (j == (stageWidth * 6 + 20) - 2 || j == (stageWidth * 6 + 20) - 1)) {
+				setBackgroundColor(temp);
+				gotoxy(4 + j, 34 + i);
+				std::cout << " ";
+			}
+		}
+	}
+
+	setBackgroundColor(ColorBlack);
+	gotoxy(78, 38);
+	std::cout << "엔딩";
 
 }
 
@@ -111,7 +133,7 @@ void StageSelectScene::PrintStage(int x, int y, int stage, bool isPlayable, int 
 	std::cout << "방향키 (WASD) : 이동 | 스페이스바 : 선택 | ESC : 메인화면";
 
 	int totalStar = 0;
-	for (int i = 0; i < 24; i++) {
+	for (int i = 0; i < 18; i++) {
 		totalStar += stageStar[i];
 	}
 
@@ -121,7 +143,7 @@ void StageSelectScene::PrintStage(int x, int y, int stage, bool isPlayable, int 
 	else {
 		gotoxy(136, 44);
 	}
-	std::cout << "모은 별의 개수 : " << totalStar << " / 72";
+	std::cout << "모은 별의 개수 : " << totalStar << " / 54";
 
 }
 
@@ -143,11 +165,32 @@ void StageSelectScene::SelectStage() {
 			}
 			else if (key == 32) { //스페이스바
 				setBackgroundColor(ColorBlack);
-				SceneManager::ChangeScene(new GameScene(selectedStage));
-				break;
+				if (selectedStage == 19) {
+					//게임클리어
+					break;
+				}
+				else {
+					SceneManager::ChangeScene(new GameScene(selectedStage));
+					break;
+				}
 			}
 			else if (key == 75 || key == 'A' || key == 'a') { //왼쪽
-				if (selectedStage > 1) {
+				if (selectedStage == 19) {
+					for (int i = 0; i < stageHeight; i++) {
+						for (int j = 0; j < stageWidth * 6 + 20; j++) {
+							if (i == 0 || i == stageHeight - 1 || (j == 0 || j == 1) || (j == (stageWidth * 6 + 20) - 2 || j == (stageWidth * 6 + 20) - 1)) {
+								setBackgroundColor(ColorWhite);
+								gotoxy(4 + j, 34 + i);
+								std::cout << " ";
+							}
+						}
+					}
+					selectedStage = 18;
+					x = 26 * ((selectedStage - 1) % 6) + 4;
+					y = 11 * ((selectedStage - 1) / 6) + 1;
+					PrintStageBorder(x, y, ColorLightRed);
+				}
+				else if (selectedStage > 1) {
 					PrintStageBorder(x, y, ColorWhite);
 					selectedStage--;
 					x = 26 * ((selectedStage - 1) % 6) + 4;
@@ -156,16 +199,44 @@ void StageSelectScene::SelectStage() {
 				}
 			}
 			else if ((key == 77 || key == 'D' || key == 'd') && (selectedStage < playableStage)) { //오른쪽
-				if (selectedStage < 24) {
+				if (selectedStage < 18) {
 					PrintStageBorder(x, y, ColorWhite);
 					selectedStage++;
 					x = 26 * ((selectedStage - 1) % 6) + 4;
 					y = 11 * ((selectedStage - 1) / 6) + 1;
 					PrintStageBorder(x, y, ColorLightRed);
 				}
+				else if (selectedStage == 18) {
+					PrintStageBorder(x, y, ColorWhite);
+					selectedStage = 19;
+					for (int i = 0; i < stageHeight; i++) {
+						for (int j = 0; j < stageWidth * 6 + 20; j++) {
+							if (i == 0 || i == stageHeight - 1 || (j == 0 || j == 1) || (j == (stageWidth * 6 + 20) - 2 || j == (stageWidth * 6 + 20) - 1)) {
+								setBackgroundColor(ColorLightRed);
+								gotoxy(4 + j, 34 + i);
+								std::cout << " ";
+							}
+						}
+					}
+				}
 			}
 			else if (key == 72 || key == 'W' || key == 'w') { //위쪽
-				if (selectedStage > 6) {
+				if (selectedStage == 19) {
+					for (int i = 0; i < stageHeight; i++) {
+						for (int j = 0; j < stageWidth * 6 + 20; j++) {
+							if (i == 0 || i == stageHeight - 1 || (j == 0 || j == 1) || (j == (stageWidth * 6 + 20) - 2 || j == (stageWidth * 6 + 20) - 1)) {
+								setBackgroundColor(ColorWhite);
+								gotoxy(4 + j, 34 + i);
+								std::cout << " ";
+							}
+						}
+					}
+					selectedStage = 18;
+					x = 26 * ((selectedStage - 1) % 6) + 4;
+					y = 11 * ((selectedStage - 1) / 6) + 1;
+					PrintStageBorder(x, y, ColorLightRed);
+				}
+				else if (selectedStage > 6) {
 					PrintStageBorder(x, y, ColorWhite);
 					selectedStage -= 6;
 					x = 26 * ((selectedStage - 1) % 6) + 4;
@@ -173,13 +244,26 @@ void StageSelectScene::SelectStage() {
 					PrintStageBorder(x, y, ColorLightRed);
 				}
 			}
-			else if ((key == 80 || key == 'S' || key == 's') && (selectedStage + 5 < playableStage)) { //아래쪽
-				if (selectedStage < 19) {
+			else if ((key == 80 || key == 'S' || key == 's') && (selectedStage + 5 < playableStage || playableStage == 19)) { //아래쪽
+				if (selectedStage < 13) {
 					PrintStageBorder(x, y, ColorWhite);
 					selectedStage += 6;
 					x = 26 * ((selectedStage - 1) % 6) + 4;
 					y = 11 * ((selectedStage - 1) / 6) + 1;
 					PrintStageBorder(x, y, ColorLightRed);
+				}
+				else if (selectedStage < 19) {
+					PrintStageBorder(x, y, ColorWhite);
+					selectedStage = 19;
+					for (int i = 0; i < stageHeight; i++) {
+						for (int j = 0; j < stageWidth * 6 + 20; j++) {
+							if (i == 0 || i == stageHeight - 1 || (j == 0 || j == 1) || (j == (stageWidth * 6 + 20) - 2 || j == (stageWidth * 6 + 20) - 1)) {
+								setBackgroundColor(ColorLightRed);
+								gotoxy(4 + j, 34 + i);
+								std::cout << " ";
+							}
+						}
+					}
 				}
 			}
 		}

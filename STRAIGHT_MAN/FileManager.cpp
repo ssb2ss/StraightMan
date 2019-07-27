@@ -28,7 +28,7 @@ void FileManager::SaveGame(GameData data) {
 
 	fout << data.stage << std::endl;
 
-	for (int i = 0; i < 24; i++) {
+	for (int i = 0; i < 18; i++) {
 		fout << data.starCount[i] << std::endl;
 	}
 
@@ -64,7 +64,7 @@ int FileManager::GetGameData(int stage) {
 	//각 스테이지 별 개수
 
 	int starCount;
-	std::string in_line[25];
+	std::string in_line[19];
 
 	std::ifstream fin;
 
@@ -73,7 +73,7 @@ int FileManager::GetGameData(int stage) {
 		return 0;
 	}
 
-	for (int i = 0; i < 25; i++) {
+	for (int i = 0; i < 19; i++) {
 		fin >> in_line[i];
 	}
 
