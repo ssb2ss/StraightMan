@@ -166,7 +166,7 @@ void StageSelectScene::SelectStage() {
 			else if (key == 32) { //스페이스바
 				setBackgroundColor(ColorBlack);
 				if (selectedStage == 19) {
-					//게임클리어
+					//게임엔딩
 					break;
 				}
 				else {
