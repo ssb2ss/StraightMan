@@ -3,7 +3,7 @@
 
 Player::Player()
 {
-	moveTime = 100;
+	moveTime = 60;
 }
 
 Player::~Player()
