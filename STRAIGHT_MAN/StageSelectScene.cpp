@@ -4,6 +4,7 @@
 
 #include "MainScene.h"
 #include "GameScene.h"
+#include "EndingScene.h"
 
 StageSelectScene::StageSelectScene()
 {
@@ -166,7 +167,11 @@ void StageSelectScene::SelectStage() {
 			else if (key == 32) { //스페이스바
 				setBackgroundColor(ColorBlack);
 				if (selectedStage == 19) {
-					//게임엔딩
+					int temp = 0;
+					for (int i = 0; i < 18; i++) {
+						temp += stageStar[i];
+					}
+					SceneManager::ChangeScene(new EndingScene(temp));
 					break;
 				}
 				else {
