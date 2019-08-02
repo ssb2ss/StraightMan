@@ -1,17 +1,7 @@
-﻿  ConsoleFunctions.cpp
-d:\github\straightman\straight_man\consolefunctions.cpp(12): warning C4838: 'int'에서 'SHORT'(으)로의 변환에는 축소 변환이 필요합니다.
-  EndingScene.cpp
-  FileManager.cpp
-  GameScene.cpp
-  Player.cpp
-  StageSelectScene.cpp
-  IScene.cpp
-  main.cpp
-  MainScene.cpp
-  SceneManaer.cpp
+﻿  GameScene.cpp
   코드를 생성하고 있습니다.
-  0 of 251 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  1 of 251 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    1 functions had inline decision re-evaluated but remain unchanged
   코드를 생성했습니다.
   STRAIGHT_MAN.vcxproj -> D:\GitHub\StraightMan\x64\Release\STRAIGHT_MAN.exe
