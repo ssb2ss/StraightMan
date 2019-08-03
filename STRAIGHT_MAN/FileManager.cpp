@@ -84,3 +84,4 @@ int FileManager::GetGameData(int stage) {
 	return starCount;
 
 }
+

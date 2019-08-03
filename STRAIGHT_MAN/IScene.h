@@ -8,3 +8,4 @@ public:
 
 	void virtual Start() = 0;
 };
+
