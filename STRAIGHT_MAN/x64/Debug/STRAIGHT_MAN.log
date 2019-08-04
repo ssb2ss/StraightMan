@@ -1,2 +1,5 @@
-﻿  Player.cpp
+﻿  FileManager.cpp
+  GameScene.cpp
+  StageSelectScene.cpp
+  코드를 생성하고 있습니다...
   STRAIGHT_MAN.vcxproj -> D:\GitHub\StraightMan\x64\Debug\STRAIGHT_MAN.exe
